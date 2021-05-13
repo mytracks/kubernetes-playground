@@ -1,0 +1,6 @@
+controller:
+  image:
+    tag: "v0.46.0"
+
+  hostPort:
+    enabled: false

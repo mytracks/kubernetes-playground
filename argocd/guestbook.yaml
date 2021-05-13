@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    targetRevision: HEAD
+    path: helm-guestbook
+
+    helm:
+      releaseName: guestbook
+
+      values: |
+        replicaCount: 2
+        ingress:
+          enabled: true
+          path: /
+          hosts:
+            - guestbook.mytracks4mac.info
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            cert-manager.io/cluster-issuer: letsencrypt-production
+          labels: {}
+          tls:
+            - secretName: guestbook-mytracks4mac-info-cert
+              hosts:
+                - guestbook.mytracks4mac.info
+
+      version: v3
+
+  destination:
+    server: https://vps-01.mytracks4mac.info:6443
+    namespace: guestbook
