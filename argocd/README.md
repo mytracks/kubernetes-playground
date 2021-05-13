@@ -16,6 +16,8 @@ kubectl apply -n argocd -f ingress.yaml
 
 ## Client
 
+Install client for macOS:
+
 ```sh
 brew install argocd
 ```
